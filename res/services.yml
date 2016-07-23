@@ -7,16 +7,16 @@ parameters:
 
 services:
   monolog.processor.drupal_profiling:
-    class: DrupalProfilingProcessor
+    class: Caxy\Drupal\Logging\DrupalProfilingProcessor
 
   http_middleware.logging:
-    class: LoggingMiddleware
+    class: Caxy\Drupal\Logging\LoggingMiddleware
     arguments: ['@logger.channel.request']
     tags:
       - { name: http_middleware, priority: 950 }
 
   http_middleware.alt_logging:
-    class: AlternativeLoggingMiddleware
+    class: Caxy\Drupal\Logging\AlternativeLoggingMiddleware
     arguments: ['@logger.channel.request']
     calls:
       - ['setBlacklistParameters', [['/form_build_id/', '/form_token/', '/^ajax.*ids$/', '/^ajax.*state$/']]]
@@ -36,7 +36,7 @@ services:
       - [ setFormatter, ['@monolog.console.yaml_console'] ]
 
   monolog.console.yaml_console:
-    class: YamlConsoleFormatter
+    class: Caxy\Drupal\Logging\YamlConsoleFormatter
     arguments: [ ~, ~, true ]
 
   logger.channel.request:
