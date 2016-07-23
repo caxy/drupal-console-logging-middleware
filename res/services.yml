@@ -1,0 +1,45 @@
+parameters:
+  monolog.channel_handlers:
+    default: ['console', 'browser_console', 'syslog']
+    php: ['console', 'browser_console', 'syslog']
+    request: ['console']
+  monolog.processors: ['drupal_profiling', 'message_placeholder', 'current_user', 'memory_usage', 'memory_peak_usage']
+
+services:
+  monolog.processor.drupal_profiling:
+    class: DrupalProfilingProcessor
+
+  http_middleware.logging:
+    class: LoggingMiddleware
+    arguments: ['@logger.channel.request']
+    tags:
+      - { name: http_middleware, priority: 950 }
+
+  http_middleware.alt_logging:
+    class: AlternativeLoggingMiddleware
+    arguments: ['@logger.channel.request']
+    calls:
+      - ['setBlacklistParameters', [['/form_build_id/', '/form_token/', '/^ajax.*ids$/', '/^ajax.*state$/']]]
+      - ['setCensorParameters', [ ['/pass/'] ]]
+    tags:
+      - { name: http_middleware, priority: 951 }
+
+  console.output:
+    class: Symfony\Component\Console\Output\ConsoleOutput
+    arguments: [256, true]
+    public: false
+
+  monolog.handler.console:
+    class: Symfony\Bridge\Monolog\Handler\ConsoleHandler
+    arguments: ['@console.output']
+    calls:
+      - [ setFormatter, ['@monolog.console.yaml_console'] ]
+
+  monolog.console.yaml_console:
+    class: YamlConsoleFormatter
+    arguments: [ ~, ~, true ]
+
+  logger.channel.request:
+    parent: logger.channel_base
+    arguments: ['request']
+    factory: logger.factory:get
