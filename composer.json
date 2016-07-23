@@ -2,7 +2,8 @@
     "name": "caxy/drupal-console-logging-middleware",
     "description": "Drupal middleware for developers",
     "require": {
-        "monolog/monolog": "^1.20"
+        "monolog/monolog": "^1.20",
+        "symfony/monolog-bridge": "^3.1"
     },
     "license": "MIT",
     "authors": [
