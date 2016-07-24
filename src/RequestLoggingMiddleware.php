@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class LoggingMiddleware extends AbstractLoggingMiddleware
+class RequestLoggingMiddleware extends AbstractLoggingMiddleware
 {
     /**
      * @var bool

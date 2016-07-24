@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class AlternativeLoggingMiddleware extends AbstractLoggingMiddleware
+class ProfilerLoggingMiddleware extends AbstractLoggingMiddleware
 {
     /**
      * List of Parameters to exclude from console logging.

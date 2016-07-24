@@ -9,14 +9,14 @@ services:
   monolog.processor.drupal_profiling:
     class: Caxy\Drupal\Logging\DrupalProfilingProcessor
 
-  http_middleware.logging:
-    class: Caxy\Drupal\Logging\LoggingMiddleware
+  http_middleware.logging.request:
+    class: Caxy\Drupal\Logging\RequestLoggingMiddleware
     arguments: ['@logger.channel.request']
     tags:
       - { name: http_middleware, priority: 950 }
 
-  http_middleware.alt_logging:
-    class: Caxy\Drupal\Logging\AlternativeLoggingMiddleware
+  http_middleware.logging.profiler:
+    class: Caxy\Drupal\Logging\ProfilerLoggingMiddleware
     arguments: ['@logger.channel.request']
     calls:
       - ['setBlacklistParameters', [['/form_build_id/', '/form_token/', '/^ajax.*ids$/', '/^ajax.*state$/']]]
