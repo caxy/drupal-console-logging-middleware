@@ -73,19 +73,9 @@ class ProfilerLoggingMiddleware extends AbstractLoggingMiddleware
     {
         array_filter($parameters, function ($name) {
             foreach (self::$blacklistParameters as $pattern) {
-                if (!empty($pattern) && preg_match($pattern, $name)) {
-                    return false;
-                }
+                return !(!empty($pattern) && preg_match($pattern, $name));
             }
         }, ARRAY_FILTER_USE_KEY);
-
-        foreach ($parameters as $name => $param) {
-            foreach (self::$blacklistParameters as $pattern) {
-                if (!empty($pattern) && preg_match($pattern, $name)) {
-                    unset($parameters[$name]);
-                }
-            }
-        }
 
         foreach ($parameters as $name => $param) {
             foreach (self::$censorParameters as $pattern) {
