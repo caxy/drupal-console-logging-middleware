@@ -31,22 +31,34 @@ abstract class AbstractLoggingMiddleware implements HttpKernelInterface
     protected $logger;
 
     /**
-     * Constructs a LoggingMiddleware object.
+     * @var bool
+     */
+    protected $logSubRequest;
+
+    /**
+     * Constructs a RequestLoggingMiddleware object.
      *
      * @param HttpKernelInterface $http_kernel
-     *                                         The decorated kernel.
+     *                                           The decorated kernel.
      * @param LoggerInterface     $logger
      * @param string              $logLevel
+     * @param bool                $logSubRequest
      */
-    public function __construct(HttpKernelInterface $http_kernel, LoggerInterface $logger, $logLevel = LogLevel::INFO)
+    public function __construct(HttpKernelInterface $http_kernel, LoggerInterface $logger, $logLevel = LogLevel::INFO, $logSubRequest = true)
     {
         $this->httpKernel = $http_kernel;
         $this->logLevel = $logLevel;
         $this->logger = $logger;
+        $this->logSubRequest = $logSubRequest;
     }
 
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
+        if ($type !== HttpKernelInterface::MASTER_REQUEST && false == $this->logSubRequest) {
+            // Do not log SUB requests.
+          return $this->httpKernel->handle($request, $type, $catch);
+        }
+
         $this->logRequest($request);
 
         $response = $this->httpKernel->handle($request, $type, $catch);

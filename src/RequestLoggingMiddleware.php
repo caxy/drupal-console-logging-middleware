@@ -2,45 +2,12 @@
 
 namespace Caxy\Drupal\Logging;
 
-use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class RequestLoggingMiddleware extends AbstractLoggingMiddleware
 {
-    /**
-     * @var bool
-     */
-    private $logSubRequest;
-
-    /**
-     * Constructs a LoggingMiddleware object.
-     *
-     * @param HttpKernelInterface $http_kernel
-     *                                           The decorated kernel.
-     * @param LoggerInterface     $logger
-     * @param string              $logLevel
-     * @param bool                $logSubRequest
-     */
-    public function __construct(HttpKernelInterface $http_kernel, LoggerInterface $logger, $logLevel = LogLevel::INFO, $logSubRequest = true) {
-        parent::__construct($http_kernel, $logger, $logLevel);
-        $this->logSubRequest = $logSubRequest;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true) {
-        if ($type !== HttpKernelInterface::MASTER_REQUEST && false == $this->logSubRequest) {
-            // Do not log SUB requests.
-            return $this->httpKernel->handle($request, $type, $catch);
-        }
-
-        return parent::handle($request, $type, $catch);
-    }
-
     protected function logRequest(Request $request)
     {
         $msg = 'Request "{request_method} {request_uri}"';
