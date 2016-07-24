@@ -115,11 +115,11 @@ class ProfilerLoggingMiddleware extends AbstractLoggingMiddleware
                 $sum += $query['time'];
             }
 
-            $querySummary = 'Executed {queries} queries in {time} ms.';
+            $querySummary = 'Executed {queries} queries in {time_ms} ms.';
 
             $this->logger->log($this->logLevel, $querySummary, [
               'queries' => count($queries),
-              'time' => round($sum * 1000, 2),
+              'time_ms' => round($sum * 1000, 2),
             ]);
         }
 

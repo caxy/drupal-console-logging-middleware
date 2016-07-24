@@ -24,7 +24,7 @@ class DrupalProfilingProcessor
 
     public function __invoke(array $record)
     {
-        $record['extra']['time'] = Timer::read('console_logger');
+        $record['extra']['time_ms'] = Timer::read(self::class);
         if (isset(self::$logger)) {
             $record['extra']['queries'] = count(self::$logger->get(self::class));
         }
