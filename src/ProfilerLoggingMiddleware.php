@@ -47,10 +47,8 @@ class ProfilerLoggingMiddleware extends AbstractLoggingMiddleware
      * @param int     $type
      *                         The type of request (master or sub request).
      */
-    protected function logRequest(
-      Request $request,
-      $type = HttpKernelInterface::MASTER_REQUEST
-    ) {
+    protected function logRequest(Request $request, $type = HttpKernelInterface::MASTER_REQUEST)
+    {
         if ($type == HttpKernelInterface::MASTER_REQUEST) {
             // Starts timers and logs.
             Database::startLog('console_logger');
@@ -59,8 +57,7 @@ class ProfilerLoggingMiddleware extends AbstractLoggingMiddleware
 
                 $parameters = $this->sanitizeParameters($parameters);
                 if (!empty($parameters)) {
-                    $this->logger->log($this->logLevel, 'Request parameters',
-                      $parameters);
+                    $this->logger->log($this->logLevel, 'Request parameters', $parameters);
                 }
             }
         }
@@ -92,9 +89,7 @@ class ProfilerLoggingMiddleware extends AbstractLoggingMiddleware
 
         foreach ($parameters as $name => $param) {
             foreach (self::$censorParameters as $pattern) {
-                if (isset($parameters[$name]) && !empty($pattern) && preg_match($pattern,
-                    $name)
-                ) {
+                if (isset($parameters[$name]) && !empty($pattern) && preg_match($pattern, $name)) {
                     $parameters[$name] = '********';
                 }
             }

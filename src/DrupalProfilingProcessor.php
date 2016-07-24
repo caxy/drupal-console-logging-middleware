@@ -9,14 +9,14 @@ use Drupal\Core\Database\Log;
 class DrupalProfilingProcessor
 {
     /**
-   * @var Log
-   */
-  private static $logger;
+     * @var Log
+     */
+    private static $logger;
 
     public function __construct()
     {
         // Starts timers and logs.
-    Timer::start('console_logger');
+        Timer::start(self::class);
         if (!isset(self::$logger)) {
             self::$logger = Database::startLog(self::class);
         }
